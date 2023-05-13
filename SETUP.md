@@ -35,7 +35,23 @@ npm start
 
 ## Backend
 
-TODO
+### Step 1: Install Django
+
+```bash
+pip install django djangorestframework django-cors-headers
+```
+
+### Step 2: Create the backend project
+
+```bash
+django-admin startproject backend
+```
+
+### Step 3: Create the api app
+
+```bash
+django-admin startapp api
+```
 
 # References
 
