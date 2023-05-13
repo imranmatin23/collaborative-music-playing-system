@@ -31,6 +31,10 @@ pip install -r requirements.txt
 npm start
 ```
 
+# Adding new API
+
+1. Routes defined in frontend/src/App.js
+
 ---
 
 ## Backend
@@ -48,7 +52,7 @@ python manage.py runserver
 
 # Adding new API
 
-1. Add to backend/api/urls.py
+1. Routes defined in backend/api/urls.py
 
 2. Create View in backend/api/views.py
 
