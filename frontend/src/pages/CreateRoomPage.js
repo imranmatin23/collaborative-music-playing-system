@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import {
   Grid,
   FormControl,
@@ -26,11 +27,17 @@ function CreateRoomPage() {
   }
 
   function handleRoomButtonPressed() {
-    var state = {
-      votesToSkip: votesToSkip,
-      guestCanPause: guestCanPause,
+    const body = {
+      votes_to_skip: votesToSkip,
+      guest_can_pause: guestCanPause,
     };
-    console.log(state);
+
+    axios
+      .post("/api/create-room", body)
+      .then((response) => console.log(response.data))
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   }
 
   return (
