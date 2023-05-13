@@ -2,7 +2,38 @@
 
 The product is built with ReactJS and Python.
 
-# Build
+# Setup
+
+## Prerequisites
+
+### Step 1: Clone the project
+
+```bash
+git clone https://github.com/imranmatin23/collaborative-music-playing-system.git
+cd collaborative-music-playing-system
+```
+
+### Step 2: Create virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+---
+
+## Frontend
+
+### Step 1: Run the frontend
+
+```bash
+npm start
+```
+
+---
+
+## Backend
 
 TODO
 
