@@ -35,7 +35,26 @@ npm start
 
 ## Backend
 
-TODO
+### Step 1: Run the backend
+
+```bash
+# Create a migration file
+python manage.py makemigrations
+# Apply changes to the database
+python manage.py migrate
+# Run the backend server
+python manage.py runserver
+```
+
+# Adding new API
+
+1. Add to backend/api/urls.py
+
+2. Create View in backend/api/views.py
+
+3. Add Serializer backend/api/serializers.py
+
+4. Add Model in backend/api/models.py
 
 # References
 
