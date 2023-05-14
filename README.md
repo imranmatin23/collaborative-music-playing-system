@@ -1,6 +1,6 @@
 # Collaborative Music Playing System
 
-The product is built with ReactJS and Python.
+The Collaborative Music Playing System is a way for you and your friends to listen to music on Spotify together! The system is built with React and Django.
 
 # Setup
 
