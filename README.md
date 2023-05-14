@@ -4,16 +4,14 @@ The product is built with ReactJS and Python.
 
 # Setup
 
-## Prerequisites
-
-### Step 1: Clone the project
+## Step 1: Clone the project
 
 ```bash
 git clone https://github.com/imranmatin23/collaborative-music-playing-system.git
 cd collaborative-music-playing-system
 ```
 
-### Step 2: Create virtual environment
+## Step 2: Create virtual environment
 
 ```bash
 python3 -m venv .venv
@@ -21,44 +19,26 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
+## Step 3: Run the backend
 
-## Frontend
-
-### Step 1: Run the frontend
+Runs the backend webserver at http://127.0.0.1:8000.
 
 ```bash
-npm start
-```
-
-# Adding new API
-
-1. Routes defined in frontend/src/App.js
-
----
-
-## Backend
-
-### Step 1: Run the backend
-
-```bash
-# Create a migration file
-python manage.py makemigrations
-# Apply changes to the database
+cd backend
 python manage.py migrate
-# Run the backend server
+python manage.py makemigrations
 python manage.py runserver
 ```
 
-# Adding new API
+## Step 4: Run the frontend
 
-1. Routes defined in backend/api/urls.py
+Runs the frontend webserver at http://127.0.0.1:3000.
 
-2. Create View in backend/api/views.py
-
-3. Add Serializer backend/api/serializers.py
-
-4. Add Model in backend/api/models.py
+```bash
+cd frontend
+npm install
+npm start
+```
 
 # References
 
