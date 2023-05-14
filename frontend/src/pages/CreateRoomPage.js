@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Grid,
@@ -18,6 +18,8 @@ function CreateRoomPage() {
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
 
+  var navigate = useNavigate();
+
   function handleVotesChange(e) {
     setVotesToSkip(e.target.value);
   }
@@ -34,7 +36,11 @@ function CreateRoomPage() {
 
     axios
       .post("/api/create-room", body)
-      .then((response) => console.log(response.data))
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+        navigate("/room/" + data.code);
+      })
       .catch((error) => {
         console.error("There was an error!", error);
       });
