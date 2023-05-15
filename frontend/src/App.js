@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import CreateRoomPage from "./pages/CreateRoomPage";
 import RoomJoinPage from "./pages/RoomJoinPage";
 import Room from "./pages/Room";
+import "./App.css";
 
 function App() {
   return (
