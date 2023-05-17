@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Button, Typography } from "@mui/material";
 import axios from "axios";
+import CreateRoomPage from "./CreateRoomPage";
 
 function Room() {
   const [votesToSkip, setVotesToSkip] = useState(2);
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   var navigate = useNavigate();
 
@@ -42,9 +44,57 @@ function Room() {
       });
   }
 
+  function updateShowSettings(value) {
+    setShowSettings(value);
+  }
+
+  function renderSettingsButton() {
+    return (
+      <Grid item xs={12} align={"center"}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => updateShowSettings(true)}
+        >
+          Settings
+        </Button>
+      </Grid>
+    );
+  }
+
+  function renderSettings() {
+    return (
+      <Grid container spacing={1}>
+        <Grid item xs={12} align="center">
+          <CreateRoomPage
+            update={true}
+            votesToSkip={votesToSkip}
+            guestCanPause={guestCanPause}
+            roomCode={roomCode}
+            updateCallback={() => {}}
+          />
+        </Grid>
+        <Grid item xs={12} align="center">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => updateShowSettings(false)}
+          >
+            Close
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  }
+
   useEffect(() => {
     getRoomDetails();
   });
+
+  // Conditionally return the settings HTML
+  if (showSettings) {
+    return renderSettings();
+  }
 
   return (
     <Grid container spacing={1}>
@@ -68,6 +118,8 @@ function Room() {
           Host: {isHost.toString()}
         </Typography>
       </Grid>
+      {/* Conditionally render the settings button if the user is the host */}
+      {isHost ? renderSettingsButton() : null}
       <Grid item xs={12} align="center">
         <Button
           variant="contained"
