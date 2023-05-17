@@ -1,3 +1,6 @@
+"""
+Define the urls for the API app. It decides which views map to which endpoints.
+"""
 from django.urls import path
 from .views import (
     RoomView,
