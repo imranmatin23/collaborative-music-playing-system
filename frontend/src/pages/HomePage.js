@@ -1,18 +1,29 @@
+/*
+ * This file defines the Home page.
+ */
 import React, { useEffect } from "react";
 import { Grid, Button, ButtonGroup, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+/*
+ * Render the HomePage component.
+ */
 function HomePage() {
+  // Set up navigation
   const navigate = useNavigate();
 
   // NOTE: functional equivalent of async componentDidMount() function
+  // Since there is no second argument specifiying any dependencies,
+  // this side effect is called after every render
   useEffect(() => {
+    // Invoke the backend API to check if a user is already in a Room
     async function getUserInRoom() {
       axios
         .get("/api/user-in-room")
         .then((response) => {
           console.log(response);
+          // If the user is in a room, redirect them to that Room's page
           if (response.data.code != null) {
             navigate(`/room/${response.data.code}`);
           }
@@ -21,6 +32,7 @@ function HomePage() {
           console.error("There was an error!", error);
         });
     }
+    // Invoke the function to check if a user is in a room
     getUserInRoom();
   });
 
