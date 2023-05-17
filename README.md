@@ -69,3 +69,4 @@ TODO
 
 [1] [Django & React - Full Stack Web App Tutorial](https://youtube.com/playlist?list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j) by Tech With Tim
 [2] [Writing Makefiles for Python Projects](https://venthur.de/2021-03-31-python-makefiles.html) by Bastian Venthur
+[3] [Dockerizing Django App](https://blog.logrocket.com/dockerizing-django-app/) by LogRocket
