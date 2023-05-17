@@ -55,8 +55,8 @@ function CreateRoomPage() {
       </Grid>
       <Grid item xs={12} align="center">
         <FormControl component="fieldset">
-          <FormHelperText>
-            <div align="center">Guest Control of Playback State</div>
+          <FormHelperText sx={{ textAlign: "center" }}>
+            Guest Control of Playback State
           </FormHelperText>
           <RadioGroup
             row
@@ -86,8 +86,8 @@ function CreateRoomPage() {
           defaultValue={defaultVotes}
           inputProps={{ min: 1, style: { textAlign: "center" } }}
         />
-        <FormHelperText>
-          <div align="center">Votes Required to Skip Song</div>
+        <FormHelperText sx={{ textAlign: "center" }}>
+          Votes Required to Skip Song
         </FormHelperText>
       </Grid>
       <Grid item xs={12} align="center">
