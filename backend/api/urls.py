@@ -7,8 +7,8 @@ from .views import (
     CreateRoomView,
     GetRoomView,
     JoinRoomView,
-    UserInRoom,
-    LeaveRoom,
+    UserInRoomView,
+    LeaveRoomView,
     UpdateRoom,
 )
 
@@ -17,7 +17,7 @@ urlpatterns = [
     path("create-room", CreateRoomView.as_view()),
     path("get-room", GetRoomView.as_view()),
     path("join-room", JoinRoomView.as_view()),
-    path("user-in-room", UserInRoom.as_view()),
-    path("leave-room", LeaveRoom.as_view()),
+    path("user-in-room", UserInRoomView.as_view()),
+    path("leave-room", LeaveRoomView.as_view()),
     path("update-room", UpdateRoom.as_view()),
 ]

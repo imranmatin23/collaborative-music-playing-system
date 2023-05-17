@@ -170,25 +170,47 @@ class CreateRoomView(APIView):
             return Response(RoomSerializer(room).data, status=status.HTTP_201_CREATED)
 
 
-class UserInRoom(APIView):
+class UserInRoomView(APIView):
+    """
+    Gets the Room associated with the current user.
+    """
+
     def get(self, request, format=None):
+        """
+        Returns the Room associated with the current user.
+        """
+        # Create a Session for the user if one does not exist already
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
 
+        # Read the Room Code associated with the session
         data = {"code": self.request.session.get("room_code")}
 
         return JsonResponse(data, status=status.HTTP_200_OK)
 
 
-class LeaveRoom(APIView):
+class LeaveRoomView(APIView):
+    """
+    Removes a user from the room and deletes the Room if they are the host.
+    """
+
     def post(self, request, format=None):
+        """
+        Removes a user from the room and deletes the Room if they are the host.
+        """
+        # If room code is not found in the session the user is not in a room anyways
         if "room_code" in self.request.session:
+            # Delete the Room Code from the session
             self.request.session.pop("room_code")
+
+            # SELECT Room FROM Database WHERE host=current_session
+            # i.e. Read the Room from the database where the current user (session)
+            # is the Host
             host_id = self.request.session.session_key
-            room_results = Room.objects.filter(host=host_id)
-            if len(room_results) > 0:
-                room = room_results[0]
-                room.delete()
+            room = Room.objects.filter(host=host_id)
+            # If a Room is found, delete it
+            if len(room) > 0:
+                room[0].delete()
 
         return Response({"Message": "Success"}, status=status.HTTP_200_OK)
 
