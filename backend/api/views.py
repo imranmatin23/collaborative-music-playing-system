@@ -9,6 +9,14 @@ from .models import Room
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import JsonResponse
+from django.shortcuts import render
+
+
+def index(request):
+    """
+    Return index.html from static build.
+    """
+    return render(request, "index.html")
 
 
 class RoomView(generics.ListAPIView):

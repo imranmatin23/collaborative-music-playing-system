@@ -16,9 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from api.views import index
 
 urlpatterns = [
+    # Admin API routes
     path("admin/", admin.site.urls),
+    # Index Route for static build
+    path("", index, name="index"),
     # Add the API App's URLs
     path("api/", include("api.urls")),
 ]

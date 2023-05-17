@@ -40,6 +40,23 @@ npm install
 npm start
 ```
 
+## Step 5: Build the App
+
+Builds the frontend and moves the build to the backend. To test the build simply run the backend webserver only.
+
+```bash
+cd frontend
+npm run relocate
+```
+
+## Step 5: Deploy the App
+
+TODO
+
+```bash
+TODO
+```
+
 # TODO
 
 1. Spotify Integration
