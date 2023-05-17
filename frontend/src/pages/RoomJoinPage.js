@@ -5,7 +5,8 @@ import axios from "axios";
 
 function RoomJoinPage() {
   const [roomCode, setRoomCode] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+  const errorString = "Room not found.";
 
   var navigate = useNavigate();
 
@@ -27,8 +28,7 @@ function RoomJoinPage() {
       .catch((error) => {
         console.log(error);
         if (error.response.status === 404) {
-          // TODO: This is not updating the state of the error message
-          setError("Room not found.");
+          setError(true);
         } else {
           console.error("There was an error!", error);
         }
@@ -48,7 +48,7 @@ function RoomJoinPage() {
           label="Code"
           placeholder="Enter a Room Code"
           value={roomCode}
-          helper={error}
+          helperText={error ? errorString : ""}
           variant="outlined"
           onChange={handleTextFieldChange}
         />
