@@ -16,7 +16,7 @@ cd collaborative-music-playing-system
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 ## Step 3: Run the backend
