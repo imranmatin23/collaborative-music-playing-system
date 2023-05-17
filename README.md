@@ -40,6 +40,14 @@ npm install
 npm start
 ```
 
+# TODO
+
+1. Spotify Integration
+2. IaaC/Deployment (monolith)
+3. CI/CD
+4. Testing
+5. Continuous: Update (fullstack-web-app-template)[https://github.com/imranmatin23/fullstack-web-app-template.git] with templates for all the above items
+
 # References
 
 [1] [Django & React - Full Stack Web App Tutorial](https://youtube.com/playlist?list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j) by Tech With Tim
