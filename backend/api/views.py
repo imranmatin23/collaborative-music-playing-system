@@ -215,38 +215,61 @@ class LeaveRoomView(APIView):
         return Response({"Message": "Success"}, status=status.HTTP_200_OK)
 
 
-class UpdateRoom(APIView):
+class UpdateRoomView(APIView):
+    """
+    Creates a Room.
+    """
+
+    # Define the Serializer to use
     serializer_class = UpdateRoomSerializer
 
     def patch(self, request, format=None):
+        """
+        Updates a Room for a User if it exists.
+        """
+        # Create a Session for the user if one does not exist already
+
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
 
+        # Serialize the request into a Room object
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            guest_can_pause = serializer.data.get("guest_can_pause")
-            votes_to_skip = serializer.data.get("votes_to_skip")
-            code = serializer.data.get("code")
 
-            queryset = Room.objects.filter(code=code)
-            if not queryset.exists():
-                return Response(
-                    {"Message": "Room not found"}, status=status.HTTP_404_NOT_FOUND
-                )
+        # Fail the request if serailization fails
+        if not serializer.is_valid():
+            return Response(
+                {"Bad Request": "Invalid Data..."}, status=status.HTTP_400_BAD_REQUEST
+            )
 
-            room = queryset[0]
-            user_id = self.request.session.session_key
-            if room.host != user_id:
-                return Response(
-                    {"Message": "You are not the host of this room."},
-                    status=status.HTTP_403_FORBIDDEN,
-                )
+        # Extract relevant fields from the serialized Room object
+        guest_can_pause = serializer.data.get("guest_can_pause")
+        votes_to_skip = serializer.data.get("votes_to_skip")
+        code = serializer.data.get("code")
 
-            room.guest_can_pause = guest_can_pause
-            room.votes_to_skip = votes_to_skip
-            room.save(update_fields=["guest_can_pause", "votes_to_skip"])
-            return Response(RoomSerializer(room).data, status=status.HTTP_200_OK)
+        # SELECT Room FROM Database WHERE code=Room code
+        # i.e. Read the Room from the database where the room code is the one
+        # provided
+        queryset = Room.objects.filter(code=code)
 
-        return Response(
-            {"Bad Request": "Invalid Data..."}, status=status.HTTP_400_BAD_REQUEST
-        )
+        # If the Room does not exist in the database fail the request
+        if not queryset.exists():
+            return Response(
+                {"Message": "Room not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # If the Current User is not the host of the Room fail the request
+        # because they are not allowed to update the Room
+        room = queryset[0]
+        user_id = self.request.session.session_key
+        if room.host != user_id:
+            return Response(
+                {"Message": "You are not the host of this room."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        # Update the Room in the database
+        room.guest_can_pause = guest_can_pause
+        room.votes_to_skip = votes_to_skip
+        room.save(update_fields=["guest_can_pause", "votes_to_skip"])
+
+        return Response(RoomSerializer(room).data, status=status.HTTP_200_OK)
