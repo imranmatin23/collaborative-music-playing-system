@@ -1,24 +1,37 @@
+/*
+ * This file defines the JoinRoom page.
+ */
 import React, { useState } from "react";
 import { TextField, Button, Grid, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+/*
+ * Render the RoomJoinPage component.
+ */
 function RoomJoinPage() {
-  const [roomCode, setRoomCode] = useState("");
-  const [error, setError] = useState(false);
+  // Define the constants
   const errorString = "Room not found.";
 
+  // Initialize the state variables
+  const [roomCode, setRoomCode] = useState("");
+  const [error, setError] = useState(false);
+
+  // Set up navigation
   var navigate = useNavigate();
 
+  // Define the handler for TextField updates
   function handleTextFieldChange(e) {
     setRoomCode(e.target.value);
   }
 
+  // Define the handler for when the Room Button is pressed
   function handleRoomButtonPressed(e) {
     const body = {
       code: roomCode,
     };
 
+    // Navigate the user to the page for the Room they joined if successful
     axios
       .post("/api/join-room", body)
       .then((response) => {
@@ -27,6 +40,7 @@ function RoomJoinPage() {
       })
       .catch((error) => {
         console.log(error);
+        // If the error is a 404, set the error flag
         if (error.response.status === 404) {
           setError(true);
         } else {
@@ -43,6 +57,7 @@ function RoomJoinPage() {
         </Typography>
       </Grid>
       <Grid item xs={12} align="center">
+        {/* Decide whether or not to render an error based on the error flag */}
         <TextField
           error={error}
           label="Code"
