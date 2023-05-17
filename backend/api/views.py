@@ -1,3 +1,8 @@
+"""
+Define the Views for the API App. These contain the backend logic for each API in the API App.
+
+NOTE: A user is identified by their Session Key.
+"""
 from rest_framework import generics, status
 from .serializers import RoomSerializer, CreateRoomSerializer, UpdateRoomSerializer
 from .models import Room
@@ -6,58 +11,104 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 
 
-# Create your views here.
-
-
 class RoomView(generics.ListAPIView):
-    queryset = Room.objects.all()
+    """
+    Returns a serialized list of all Rooms in the database.
+    """
+
+    # Define the Serializer to use
     serializer_class = RoomSerializer
+
+    # Query all Room objects in the database
+    queryset = Room.objects.all()
 
 
 class GetRoomView(APIView):
+    """
+    Returns a Room if it exists in the database
+    """
+
+    # Define the Serializer to use
     serializer_class = RoomSerializer
+
+    # This is the parameter that we need to read since
+    # it is used to uniquely identify a room
     lookup_url_kwarg = "code"
 
     def get(self, request, format=None):
+        """
+        Defines the GET method for this view. Returns a serialized Room object if found.
+        """
+        # Read the Room Code from the request
         code = request.GET.get(self.lookup_url_kwarg)
-        if code != None:
-            room = Room.objects.filter(code=code)
-            if len(room) > 0:
-                data = self.serializer_class(room[0]).data
-                data["is_host"] = self.request.session.session_key == room[0].host
-                return Response(data, status=status.HTTP_200_OK)
+
+        # Fail the request if the code parameters is not found in the request
+        if code is None:
+            return Response(
+                {"Bad Request": "Code parameter not found in request."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Read the Room with the specified code from the database
+        room = Room.objects.filter(code=code)
+
+        # If no room is found in the database with that code fail the request
+        if len(room) == 0:
             return Response(
                 {"Room Not Found": "Invalid Room Code."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-        return Response(
-            {"Bad Request": "Code parameter not found in request."},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+
+        # Serialize the first Room object returned from the database
+        data = self.serializer_class(room[0]).data
+        # Set the is host field if the user in the current session matches the
+        # user who created the Room
+        data["is_host"] = self.request.session.session_key == room[0].host
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
-class JoinRoom(APIView):
+class JoinRoomView(APIView):
+    """
+    Associates a User with a Room by adding the Room Code to their Session.
+    """
+
+    # This is the parameter that we need to read since
+    # it is used to uniquely identify a room
     lookup_url_kwarg = "code"
 
     def post(self, request, format=None):
+        """
+        Read a Room from the database and associate a Room Code with a User (session).
+        """
+        # Create a Session for the user if one does not exist already
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
 
+        # Read the Room Code from the request
         code = request.data.get(self.lookup_url_kwarg)
-        if code is not None:
-            room_result = Room.objects.filter(code=code)
-            if len(room_result) > 0:
-                room = room_result[0]
-                self.request.session["room_code"] = code
-                return Response({"message": "Room Joined!"}, status=status.HTTP_200_OK)
+
+        # Fail the request if the code parameters is not found in the request
+        if code is None:
+            return Response(
+                {"Bad Request": "Code parameter not found in request."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Read the Room with the specified code from the database
+        room = Room.objects.filter(code=code)
+
+        # If no room is found in the database with that code fail the request
+        if len(room) == 0:
             return Response(
                 {"Bad Request": "Invalid Room Code"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        return Response(
-            {"Bad Request": "Invalid post data, did not find a code key"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+        # Set the room code for the session to the code passed in
+        # This ties a Session (i.e. a User) to a Room
+        self.request.session["room_code"] = code
+
+        return Response({"message": "Room Joined!"}, status=status.HTTP_200_OK)
 
 
 class CreateRoomView(APIView):
