@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Grid, Button, ButtonGroup, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -22,7 +22,7 @@ function HomePage() {
         });
     }
     getUserInRoom();
-  }, []);
+  });
 
   return (
     <Grid container spacing={3}>
