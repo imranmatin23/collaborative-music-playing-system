@@ -1,3 +1,6 @@
+/*
+ * This file defines the CreateRoom page.
+ */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -15,6 +18,12 @@ import {
   Alert,
 } from "@mui/material";
 
+/*
+ * Render the CreateRoomPage component.
+ *
+ * NOTE: The name of the component is misleading as this component will either
+ * render the Create or Update Room page depending on the update flag passed.
+ */
 function CreateRoomPage({
   votesToSkip = 2,
   guestCanPause = true,
@@ -22,20 +31,27 @@ function CreateRoomPage({
   roomCode = null,
   updateCallback = () => {},
 }) {
+  // Initialize the state variables
   const [guestCanPauseState, setGuestCanPauseState] = useState(guestCanPause);
   const [votesToSkipState, setVotesToSkipState] = useState(votesToSkip);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Set up navigation
   var navigate = useNavigate();
 
+  // Define the handler for votesToSkip state updates
   function handleVotesChange(e) {
     setVotesToSkipState(e.target.value);
   }
 
+  // Define the handler for guestCanPause state updates
   function handleGuestCanPauseChange(e) {
+    // NOTE: the event value is a string but the state expects a bool
     setGuestCanPauseState(e.target.value === "true" ? true : false);
   }
+
+  // Define the handler for when the Room Button is pressed
 
   function handleRoomButtonPressed() {
     const body = {
@@ -43,6 +59,7 @@ function CreateRoomPage({
       guest_can_pause: guestCanPauseState,
     };
 
+    // Navigate the user to the page for the Room they joined if successful
     axios
       .post("/api/create-room", body)
       .then((response) => response.data)
@@ -55,6 +72,7 @@ function CreateRoomPage({
       });
   }
 
+  // Invoke the UpdateRoom backend API when the Update button is pressed
   function handleUpdateButtonPressed() {
     const body = {
       votes_to_skip: votesToSkipState,
@@ -62,6 +80,8 @@ function CreateRoomPage({
       code: roomCode,
     };
 
+    // After the API invocation, either update the success or error message
+    // and invoke the callback function required after Room Updates
     axios
       .patch("/api/update-room", body)
       .then((response) => response.data)
@@ -78,6 +98,7 @@ function CreateRoomPage({
       });
   }
 
+  // Return the Create Buttons JSX
   function renderCreateButtons() {
     return (
       <Grid container spacing={1}>
@@ -99,6 +120,7 @@ function CreateRoomPage({
     );
   }
 
+  // Return the Update Buttons JSX
   function renderUpdateButtons() {
     return (
       <Grid container spacing={1}>
@@ -115,6 +137,7 @@ function CreateRoomPage({
     );
   }
 
+  // Return the Title JSX
   function renderTitle() {
     return update ? "Update Room" : "Create a Room";
   }
@@ -122,6 +145,7 @@ function CreateRoomPage({
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} align="center">
+        {/* Depending on if the success message or error message is set, render it */}
         <Collapse in={errorMessage !== "" || successMessage !== ""}>
           {successMessage !== "" ? (
             <Alert
@@ -146,6 +170,7 @@ function CreateRoomPage({
       </Grid>
       <Grid item xs={12} align="center">
         <Typography component="h4" variant="h4">
+          {/* Render the correct title based on type of page to show (Create/Update) */}
           {renderTitle()}
         </Typography>
       </Grid>

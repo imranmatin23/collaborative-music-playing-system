@@ -85,7 +85,10 @@ function Room() {
     return (
       <Grid container spacing={1}>
         <Grid item xs={12} align="center">
-          {/* Render the Create/Update Room Page with the current values */}
+          {/* Render the Create/Update Room Page with the current values. When
+           * the callback function is invoked, the room details rendered on
+           * this page are updated.
+           */}
           <CreateRoomPage
             update={true}
             votesToSkip={votesToSkip}
