@@ -112,40 +112,62 @@ class JoinRoomView(APIView):
 
 
 class CreateRoomView(APIView):
+    """
+    Creates a Room.
+    """
+
+    # Define the Serializer to use
     serializer_class = CreateRoomSerializer
 
     def post(self, request, format=None):
+        """
+        Creates a Room for a User and if it already exists, updates it.
+        """
+        # Create a Session for the user if one does not exist already
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
 
+        # Serialize the request into a Room object
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            guest_can_pause = serializer.data.get("guest_can_pause")
-            votes_to_skip = serializer.data.get("votes_to_skip")
-            host = self.request.session.session_key
-            queryset = Room.objects.filter(host=host)
-            if queryset.exists():
-                room = queryset[0]
-                room.guest_can_pause = guest_can_pause
-                room.votes_to_skip = votes_to_skip
-                room.save(update_fields=["guest_can_pause", "votes_to_skip"])
-                self.request.session["room_code"] = room.code
-                return Response(RoomSerializer(room).data, status=status.HTTP_200_OK)
-            else:
-                room = Room(
-                    host=host,
-                    guest_can_pause=guest_can_pause,
-                    votes_to_skip=votes_to_skip,
-                )
-                room.save()
-                self.request.session["room_code"] = room.code
-                return Response(
-                    RoomSerializer(room).data, status=status.HTTP_201_CREATED
-                )
 
-        return Response(
-            {"Bad Request": "Invalid data..."}, status=status.HTTP_400_BAD_REQUEST
-        )
+        # Fail the request if serailization fails
+        if not serializer.is_valid():
+            return Response(
+                {"Bad Request": "Invalid data..."}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Extract relevant fields from the serialized Room object
+        guest_can_pause = serializer.data.get("guest_can_pause")
+        votes_to_skip = serializer.data.get("votes_to_skip")
+        host = self.request.session.session_key
+
+        # SELECT Room FROM Database WHERE host=current_session
+        # i.e. Read the Room from the database where the current user (session)
+        # is the Host
+        queryset = Room.objects.filter(host=host)
+
+        # If a Room already exists with this user as the host, update the
+        # Room in the database
+        if queryset.exists():
+            room = queryset[0]
+            room.guest_can_pause = guest_can_pause
+            room.votes_to_skip = votes_to_skip
+            room.save(update_fields=["guest_can_pause", "votes_to_skip"])
+            # Associate Room with current session
+            self.request.session["room_code"] = room.code
+            return Response(RoomSerializer(room).data, status=status.HTTP_200_OK)
+        # If a Room does not exist with this user as the host, create a new
+        # Room in the database
+        else:
+            room = Room(
+                host=host,
+                guest_can_pause=guest_can_pause,
+                votes_to_skip=votes_to_skip,
+            )
+            room.save()
+            # Associate Room with current session
+            self.request.session["room_code"] = room.code
+            return Response(RoomSerializer(room).data, status=status.HTTP_201_CREATED)
 
 
 class UserInRoom(APIView):
