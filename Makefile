@@ -21,8 +21,8 @@ run-frontend-dev: ## Run frontend web server in developement mode
 
 run-backend-dev: $(VENV) ## Run backend web server in developement mode
 	cd backend; \
-	../$(BIN)/python manage.py migrate; \
 	../$(BIN)/python manage.py makemigrations; \
+	../$(BIN)/python manage.py migrate; \
 	../$(BIN)/python manage.py runserver; \
 	cd ../
 
