@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "corsheaders",
     # Add the API App
     "api",
+    # Add the Spotfiy App
+    "spotify",
 ]
 
 MIDDLEWARE = [
