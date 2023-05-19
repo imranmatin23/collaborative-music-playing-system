@@ -25,4 +25,6 @@ urlpatterns = [
     path("", index, name="index"),
     # Add the API App's URLs
     path("api/", include("api.urls")),
+    # Add the Spotify App's URLs
+    path("spotify/", include("spotify.urls")),
 ]

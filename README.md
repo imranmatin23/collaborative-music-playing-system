@@ -4,6 +4,18 @@ The Collaborative Music Playing System is a way for you and your friends to list
 
 # Setup
 
+## Step 0: Set up a Spotify App
+
+Follow the [Spotify Web API documentation](https://developer.spotify.com/documentation/web-api) to create an App.
+
+```bash
+{
+    "App name": "Collaborative Music Playing System",
+    "App description": "The Collaborative Music Playing System is a way for you and your friends to listen to music on Spotify together!",
+    "Redirect URIs": "http://127.0.0.1:8000/spotify/redirect"
+}
+```
+
 ## Step 1: Clone the project
 
 ```bash
@@ -21,7 +33,7 @@ pip install -r backend/requirements.txt
 
 ## Step 3: Run the backend
 
-Runs the backend webserver at http://127.0.0.1:8000.
+Update the Spotify credentials in `credentials.py`. Run the backend webserver at http://127.0.0.1:8000.
 
 ```bash
 cd backend
@@ -32,7 +44,7 @@ python manage.py runserver
 
 ## Step 4: Run the frontend
 
-Runs the frontend webserver at http://127.0.0.1:3000.
+Run the frontend webserver at http://127.0.0.1:3000.
 
 ```bash
 cd frontend

@@ -16,6 +16,7 @@ function Room() {
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
 
   // Set up navigation
   var navigate = useNavigate();
@@ -35,11 +36,47 @@ function Room() {
         setVotesToSkip(data.votes_to_skip);
         setGuestCanPause(data.guest_can_pause);
         setIsHost(data.is_host);
+
+        // If the user is a Host then authenticate with Spotify
+        if (data.is_host) {
+          authenticateSpotify();
+        }
       })
       // Navigate to the Home Page if there are any errors
       .catch((error) => {
         console.error("There was an error!", error);
         navigate("/");
+      });
+  }
+
+  //
+  function authenticateSpotify() {
+    axios
+      .get("/spotify/is-authenticated")
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+
+        // Update the state with the Host's Spotify authentication details
+        setSpotifyAuthenticated(data.status);
+
+        // Authenticate the user with Spotify if they are not authenticated yet
+        if (!data.status) {
+          axios
+            .get("/spotify/get-auth-url")
+            .then((response) => response.data)
+            .then((data) => {
+              console.log(data);
+              // Redirect the user to the Spotify Authorization page
+              window.location.replace(data.url);
+            })
+            .catch((error) => {
+              console.error("There was an error!", error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
       });
   }
 
