@@ -13,4 +13,8 @@ urlpatterns = [
     path("is-authenticated", IsAuthenticated.as_view()),
     # Endpoint to get the current song playing for the host of the room the user is in.
     path("current-song", CurrentSong.as_view()),
+    # Endpoint to play a song in a Room
+    path("play", PlaySong.as_view()),
+    # Endpoint to pause a song in a Room
+    path("pause", PauseSong.as_view()),
 ]

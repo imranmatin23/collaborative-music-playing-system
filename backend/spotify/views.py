@@ -197,3 +197,51 @@ class CurrentSong(APIView):
             {"Error": "Internal Server Error."},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
+
+class PauseSong(APIView):
+    """
+    Pauses a song for a Room.
+    """
+
+    def put(self, response, format=None):
+        """
+        Pauses a song for a Room.
+        """
+        # Extract room code from the session
+        room_code = self.request.session.get("room_code")
+        # Get the Room from the database
+        room = Room.objects.filter(code=room_code)[0]
+
+        # Validate current user is host or the room allows guests to pause
+        # and if so play the song
+        if self.request.session.session_key == room.host or room.guest_can_pause:
+            pause_song(room.host)
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        # Return 403 to indication not allowed
+        return Response({}, status=status.HTTP_403_FORBIDDEN)
+
+
+class PlaySong(APIView):
+    """
+    Plays a song for a Room.
+    """
+
+    def put(self, response, format=None):
+        """
+        Plays a song for a Room.
+        """
+        # Extract room code from the session
+        room_code = self.request.session.get("room_code")
+        # Get the Room from the database
+        room = Room.objects.filter(code=room_code)[0]
+
+        # Validate current user is host or the room allows guests to pause
+        # and if so play the song
+        if self.request.session.session_key == room.host or room.guest_can_pause:
+            play_song(room.host)
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        # Return 403 to indication not allowed
+        return Response({}, status=status.HTTP_403_FORBIDDEN)

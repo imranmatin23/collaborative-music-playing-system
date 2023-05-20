@@ -12,6 +12,7 @@ import {
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import PauseIcon from "@mui/icons-material/Pause";
+import axios from "axios";
 
 /*
  * Render the MusicPlayer component.
@@ -19,6 +20,32 @@ import PauseIcon from "@mui/icons-material/Pause";
 function MusicPlayer(props) {
   // Compute the progress through the song
   var songProgress = (props.time / props.duration) * 100;
+
+  // Execute API request to backend to play a Song for a Room
+  function playSong() {
+    axios
+      .put("/spotify/play")
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }
+
+  // Execute API request to backend to pause a Song for a Room
+  function pauseSong() {
+    axios
+      .put("/spotify/pause")
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }
 
   // TODO: Bug causing error when trying to use mui icons
   return (
@@ -35,7 +62,7 @@ function MusicPlayer(props) {
             {props.artist}
           </Typography>
           {/* <div>
-            <IconButton>
+            <IconButton onClick={() => { props.is_playing ? pauseSong() : playSong() }}>
               {props.is_playing ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
             <IconButton>
