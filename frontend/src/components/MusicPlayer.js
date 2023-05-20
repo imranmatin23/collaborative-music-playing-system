@@ -64,7 +64,12 @@ function MusicPlayer(props) {
     <Card>
       <Grid container alignItems="center">
         <Grid item align="center" xs={4}>
-          <img src={props.image_url} height="100%" width="100%" />
+          <img
+            src={props.image_url}
+            height="100%"
+            width="100%"
+            alt="Album Cover for Currently Playing Song"
+          />
         </Grid>
         <Grid item align="center" xs={8}>
           <Typography component="h5" variant="h5">

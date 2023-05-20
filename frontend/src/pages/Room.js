@@ -17,7 +17,6 @@ function Room() {
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
   const [song, setSong] = useState({});
 
   // Set up navigation
@@ -58,9 +57,6 @@ function Room() {
       .then((response) => response.data)
       .then((data) => {
         console.log(data);
-
-        // Update the state with the Host's Spotify authentication details
-        setSpotifyAuthenticated(data.status);
 
         // Authenticate the user with Spotify if they are not authenticated yet
         if (!data.status) {
