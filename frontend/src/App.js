@@ -7,6 +7,7 @@ import CreateRoomPage from "./pages/CreateRoomPage";
 import RoomJoinPage from "./pages/RoomJoinPage";
 import Room from "./pages/Room";
 import Info from "./pages/Info";
+import Footer from "./components/Footer";
 import "./App.css";
 
 /*
@@ -16,16 +17,21 @@ import "./App.css";
  */
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<HomePage />} />
-          <Route path="/join" element={<RoomJoinPage />} />
-          <Route path="/info" element={<Info />} />
-          <Route path="/create" element={<CreateRoomPage />} />
-          <Route path="/room/:roomCode" element={<Room />} />
-        </Routes>
-      </Router>
+    <div className="page-container">
+      <div className="App">
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<HomePage />} />
+            <Route path="/join" element={<RoomJoinPage />} />
+            <Route path="/info" element={<Info />} />
+            <Route path="/create" element={<CreateRoomPage />} />
+            <Route path="/room/:roomCode" element={<Room />} />
+          </Routes>
+        </Router>
+      </div>
+      <div className="Footer">
+        <Footer />
+      </div>
     </div>
   );
 }
