@@ -73,8 +73,8 @@ TODO
 
 1. Spotify Integration
 2. IaaC/Deployment (monolith)
-3. CI/CD
-4. Testing
+3. Testing
+4. CI/CD
 5. Continuous: Update (fullstack-web-app-template)[https://github.com/imranmatin23/fullstack-web-app-template.git] with templates for all the above items
 
 # Bug Fixes
