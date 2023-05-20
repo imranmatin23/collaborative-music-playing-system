@@ -47,7 +47,7 @@ function Room() {
       // Navigate to the Home Page if there are any errors
       .catch((error) => {
         console.error("There was an error!", error);
-        navigate("/");
+        leaveButtonPressed();
       });
   }
 
@@ -96,9 +96,10 @@ function Room() {
         // Update state of Song
         setSong(data);
       })
+      // Navigate to the Home Page if there are any errors
       .catch((error) => {
         console.error("There was an error!", error);
-        return {};
+        leaveButtonPressed();
       });
   }
 
