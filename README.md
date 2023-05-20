@@ -79,7 +79,6 @@ TODO
 # Bug Fixes
 
 1. `backend/spotify/views.py::spotify_callback()` does not return the user back to the Room they were in after authorizing with Spotify.
-2. `frontend/src/components/MusicPlayer.js` and `frontend/src/components/Info.js` are not rendering the Mui Icons (Pause/Play/Skip/NavigateBefore/NavigateAfter).
 
 # References
 

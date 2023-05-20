@@ -60,13 +60,11 @@ function Info(props) {
             page === pages.CREATE ? setPage(pages.JOIN) : setPage(pages.CREATE);
           }}
         >
-          {page === pages.CREATE ? "Previous Page" : "Next Page"}
-          {/* TODO: Bug causing error when trying to use mui icons */}
-          {/* {page === pages.CREATE ? (
+          {page === pages.CREATE ? (
             <NavigateBeforeIcon />
           ) : (
             <NavigateNextIcon />
-          )} */}
+          )}
         </IconButton>
       </Grid>
       <Grid item xs={12} align="center">
