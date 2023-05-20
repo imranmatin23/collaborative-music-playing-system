@@ -180,10 +180,10 @@ function Room() {
     return () => clearInterval(interval);
   }, []);
 
-  // Get Room details
+  // Get Room details only after initial render
   useEffect(() => {
     getRoomDetails();
-  });
+  }, []);
 
   // If the ShowSettings flag is true then render the settings page
   if (showSettings) {
