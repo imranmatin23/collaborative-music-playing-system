@@ -10,13 +10,12 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import "../styles/Footer.css";
 
 /*
-/*
  * Render the Footer component.
  */
 function Footer() {
   return (
     <div className="footer">
-      <div className="socialMedia">
+      {/* <div className="socialMedia">
         <IconButton href="mailto:imranmatin23@gmail.com">
           <EmailIcon />
         </IconButton>
@@ -29,7 +28,7 @@ function Footer() {
         <IconButton href="https://twitter.com/imranmatin23">
           <TwitterIcon />
         </IconButton>
-      </div>
+      </div> */}
       <p> &copy; 2023 Imran Matin</p>
     </div>
   );
