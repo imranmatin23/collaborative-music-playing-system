@@ -71,18 +71,15 @@ TODO
 
 # TODO
 
-1. Spotify Integration
-2. IaaC/Deployment (monolith)
-3. Testing
-4. CI/CD
-5. Continuous: Update (fullstack-web-app-template)[https://github.com/imranmatin23/fullstack-web-app-template.git] with templates for all the above items
+1. IaaC/Deployment (monolith)
+2. Testing
+3. CI/CD
+4. Continuous: Update (fullstack-web-app-template)[https://github.com/imranmatin23/fullstack-web-app-template.git] with templates for all the above items
 
 # Bug Fixes
 
 1. `backend/spotify/views.py::spotify_callback()` does not return the user back to the Room they were in after authorizing with Spotify.
-2. `frontend/src/components/MusicPlayer.js` is not rendering the Mui Icons (Pause/Play/Skip).
-3. `frontend/src/components/Info.js` is not rendering the Mui Icons (NavigateBefore/NavigateAfter).
-4. `frontend/src/components/Info.js` does not have full-fleged information about how to use the App.
+2. `frontend/src/components/MusicPlayer.js` and `frontend/src/components/Info.js` are not rendering the Mui Icons (Pause/Play/Skip/NavigateBefore/NavigateAfter).
 
 # References
 
