@@ -48,6 +48,9 @@ function HomePage() {
           <Button color="primary" to="/join" component={Link}>
             Join a Room
           </Button>
+          <Button color="info" to="/info" component={Link}>
+            Info
+          </Button>
           <Button color="secondary" to="/create" component={Link}>
             Create a Room
           </Button>

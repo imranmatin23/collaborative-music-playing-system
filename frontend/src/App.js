@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import CreateRoomPage from "./pages/CreateRoomPage";
 import RoomJoinPage from "./pages/RoomJoinPage";
 import Room from "./pages/Room";
+import Info from "./pages/Info";
 import "./App.css";
 
 /*
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route path="/join" element={<RoomJoinPage />} />
+          <Route path="/info" element={<Info />} />
           <Route path="/create" element={<CreateRoomPage />} />
           <Route path="/room/:roomCode" element={<Room />} />
         </Routes>
