@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Button, Typography } from "@mui/material";
 import axios from "axios";
 import CreateRoomPage from "./CreateRoomPage";
+import MusicPlayer from "../components/MusicPlayer";
 
 /*
  * Render the Room component.
@@ -17,6 +18,7 @@ function Room() {
   const [isHost, setIsHost] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
+  const [song, setSong] = useState({});
 
   // Set up navigation
   var navigate = useNavigate();
@@ -49,7 +51,7 @@ function Room() {
       });
   }
 
-  //
+  // Authenticates a user with Spotify if not already authenticated
   function authenticateSpotify() {
     axios
       .get("/spotify/is-authenticated")
@@ -77,6 +79,26 @@ function Room() {
       })
       .catch((error) => {
         console.error("There was an error!", error);
+      });
+  }
+
+  // Get the current song playing for the Room and update the state of Song
+  function getCurrentSong() {
+    axios
+      .get("/spotify/current-song")
+      .then((response) => {
+        if (response.status === 204) {
+          console.log("No song currently playing");
+        }
+        return response.data;
+      })
+      .then((data) => {
+        // Update state of Song
+        setSong(data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+        return {};
       });
   }
 
@@ -148,8 +170,16 @@ function Room() {
     );
   }
 
-  // Since there is no second argument specifiying any dependencies,
-  // this side effect is called after every render
+  // Poll for Current Song every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getCurrentSong();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Get Room details
   useEffect(() => {
     getRoomDetails();
   });
@@ -166,21 +196,8 @@ function Room() {
           Code: {roomCode}
         </Typography>
       </Grid>
-      <Grid item xs={12} align="center">
-        <Typography variant="h6" component="h6">
-          Votes: {votesToSkip}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} align="center">
-        <Typography variant="h6" component="h6">
-          Guest Can Pause: {guestCanPause.toString()}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} align="center">
-        <Typography variant="h6" component="h6">
-          Host: {isHost.toString()}
-        </Typography>
-      </Grid>
+      {/* Render the currently playing song in the Music Player component*/}
+      <MusicPlayer {...song} />
       {/* Conditionally render the settings button if the user is the host */}
       {isHost ? renderSettingsButton() : null}
       <Grid item xs={12} align="center">
