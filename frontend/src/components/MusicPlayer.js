@@ -47,6 +47,19 @@ function MusicPlayer(props) {
       });
   }
 
+  // Execute API request to backend to skip a Song for a Room
+  function skipSong() {
+    axios
+      .put("/spotify/skip")
+      .then((response) => response.data)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }
+
   // TODO: Bug causing error when trying to use mui icons
   return (
     <Card>
@@ -65,8 +78,8 @@ function MusicPlayer(props) {
             <IconButton onClick={() => { props.is_playing ? pauseSong() : playSong() }}>
               {props.is_playing ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
-            <IconButton>
-              <SkipNextIcon />
+            <IconButton onClick={ () => skipSong()}>
+              {props.votes} /{" "} {props.votes_required} <SkipNextIcon />
             </IconButton>
           </div> */}
         </Grid>

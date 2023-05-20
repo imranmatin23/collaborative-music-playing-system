@@ -145,3 +145,10 @@ def pause_song(session_id):
     Execute the Spotify API request to pause a song for a user and return the response.
     """
     return execute_spotify_api_request(session_id, "player/pause", put_=True)
+
+
+def skip_song(session_id):
+    """
+    Execute the Spotify API request to skip a song for a user and return the response.
+    """
+    return execute_spotify_api_request(session_id, "player/next", post_=True)

@@ -17,4 +17,6 @@ urlpatterns = [
     path("play", PlaySong.as_view()),
     # Endpoint to pause a song in a Room
     path("pause", PauseSong.as_view()),
+    # Endpoint to skip a song in a Room
+    path("skip", SkipSong.as_view()),
 ]
