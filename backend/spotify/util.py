@@ -97,7 +97,7 @@ def refresh_spotify_token(session_id):
     }
 
     # Request a Refresh Token
-    response = requests.post("https://accounts.spotify.com/api/token", data=data)
+    response = requests.post("https://accounts.spotify.com/api/token", data=data).json()
 
     # Extract fields from response body
     access_token = response.get("access_token")
