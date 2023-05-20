@@ -10,8 +10,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 import requests
-from .util import update_or_create_user_tokens, is_spotify_authenticated
+from .util import *
 import base64
+from api.models import Room
 
 
 class AuthURL(APIView):
@@ -125,3 +126,74 @@ class IsAuthenticated(APIView):
         """
         is_authenticated = is_spotify_authenticated(self.request.session.session_key)
         return Response({"status": is_authenticated}, status=status.HTTP_200_OK)
+
+
+class CurrentSong(APIView):
+    """
+    Returns the current song playing for the host of the room the user is in.
+    """
+
+    def get(self, request, format=None):
+        # Get the room code for the room the user is currently in
+        room_code = self.request.session.get("room_code")
+
+        # Retrieve the room from the database if it exists
+        room = Room.objects.filter(code=room_code)
+        if room.exists():
+            room = room[0]
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        # Identify the host of the room
+        host = room.host
+
+        # Make a GET request to Spotify to get the currently playing song for the Host
+        endpoint = "player/currently-playing"
+        response = execute_spotify_api_request(host, endpoint)
+
+        # Handle the case where there is no song currently playing for the host
+        if response.status_code == status.HTTP_200_OK:
+            # Extract the relevant fields from the response
+            response = response.json()
+            item = response.get("item")
+            duration = item.get("duration_ms")
+            progress = response.get("progress_ms")
+            album_cover = item.get("album").get("images")[0].get("url")
+            is_playing = response.get("is_playing")
+            song_id = item.get("id")
+
+            # Parse the artists returned into pretty string format
+            artist_string = ""
+            for i, artist in enumerate(item.get("artists")):
+                if i > 0:
+                    artist_string += ", "
+                name = artist.get("name")
+                artist_string += name
+
+            # Create a Song JSON object
+            song = {
+                "title": item.get("name"),
+                "artist": artist_string,
+                "duration": duration,
+                "time": progress,
+                "image_url": album_cover,
+                "is_playing": is_playing,
+                "votes": 0,
+                "id": song_id,
+            }
+            return Response(song, status=status.HTTP_200_OK)
+
+        # Handle the case where there is no song currently playing for the host
+        if response.status_code == status.HTTP_204_NO_CONTENT:
+            return Response(
+                {"Message": "No currently playing song for the host."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+
+        # DEBUG
+        print(response.text)
+
+        return Response(
+            {"Error": "Internal Server Error."},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )

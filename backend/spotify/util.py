@@ -8,6 +8,9 @@ from datetime import timedelta
 import requests
 from .credentials import CLIENT_ID, CLIENT_SECRET
 
+# Base Spotify URL
+BASE_URL = "https://api.spotify.com/v1/me/"
+
 
 def get_user_tokens(session_id):
     """
@@ -106,3 +109,26 @@ def refresh_spotify_token(session_id):
     update_or_create_user_tokens(
         session_id, access_token, token_type, expires_in, refresh_token
     )
+
+
+def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
+    """
+    Generic function that can be used to make multiple types of requests to Spotify.
+    """
+    # Get the access token for the user
+    tokens = get_user_tokens(session_id)
+    headers = {"Authorization": f"Bearer {tokens.access_token}"}
+
+    # Makes a post request if post flag is true
+    if post_:
+        requests.post(f"{BASE_URL}{endpoint}", headers=headers)
+
+    # Makes a put request if put flag is true
+    if put_:
+        requests.put(f"{BASE_URL}{endpoint}", headers=headers)
+
+    # Make a get request
+    response = requests.get(f"{BASE_URL}{endpoint}", headers=headers)
+
+    # Return the response or handle exception if error during request
+    return response
