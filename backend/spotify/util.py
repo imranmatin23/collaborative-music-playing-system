@@ -114,8 +114,12 @@ def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
     """
     Generic function that can be used to make multiple types of requests to Spotify.
     """
-    # Get the access token for the user
+    # Get the access token for the user and refresh it if needed
     tokens = get_user_tokens(session_id)
+    expires_in = tokens.expires_in
+    if expires_in <= timezone.now():
+        refresh_spotify_token(session_id)
+
     headers = {"Authorization": f"Bearer {tokens.access_token}"}
 
     # Makes a post request if post flag is true
