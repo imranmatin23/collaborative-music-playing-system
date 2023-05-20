@@ -46,19 +46,21 @@ function Info(props) {
         </Typography>
       </Grid>
       {/* Conditionally render the the NavigateBefore or NavigateAfter icon based on current page */}
-      {/* <Grid item xs={12} align="center">
+      <Grid item xs={12} align="center">
         <IconButton
           onClick={() => {
             page === pages.CREATE ? setPage(pages.JOIN) : setPage(pages.CREATE);
           }}
         >
-          {page === pages.CREATE ? (
+          {page === pages.CREATE ? "Previous Page" : "Next Page"}
+          {/* TODO: Bug causing error when trying to use mui icons */}
+          {/* {page === pages.CREATE ? (
             <NavigateBeforeIcon />
           ) : (
             <NavigateNextIcon />
-          )}
+          )} */}
         </IconButton>
-      </Grid> */}
+      </Grid>
       <Grid item xs={12} align="center">
         <Button color="secondary" variant="contained" to="/" component={Link}>
           Back
