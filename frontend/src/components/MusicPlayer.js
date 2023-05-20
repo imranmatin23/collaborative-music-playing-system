@@ -62,7 +62,7 @@ function MusicPlayer(props) {
 
   return (
     <Card>
-      <Grid contanier alignItems="center">
+      <Grid container alignItems="center">
         <Grid item align="center" xs={4}>
           <img src={props.image_url} height="100%" width="100%" />
         </Grid>
@@ -82,7 +82,8 @@ function MusicPlayer(props) {
               {props.is_playing ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
             <IconButton onClick={() => skipSong()}>
-              {props.votes} / {props.votes_required} <SkipNextIcon />
+              {props.votes} / {props.votes_required}
+              <SkipNextIcon />
             </IconButton>
           </div>
         </Grid>
