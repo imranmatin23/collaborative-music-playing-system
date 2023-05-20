@@ -186,6 +186,10 @@ class CurrentSong(APIView):
                 "votes_required": room.votes_to_skip,
                 "id": song_id,
             }
+
+            # Update the room with the current song
+            self.update_room_song(room, song_id)
+
             return Response(song, status=status.HTTP_200_OK)
 
         # Handle the case where there is no song currently playing for the host
@@ -274,7 +278,7 @@ class SkipSong(APIView):
     Skip a song for a Room.
     """
 
-    def post(self, request, format=None):
+    def put(self, request, format=None):
         """
         Skip a song for a Room.
         """
@@ -286,6 +290,15 @@ class SkipSong(APIView):
         votes = Vote.objects.filter(room=room, song_id=room.current_song)
         # Get the number of votes needed to skip a song in this room
         votes_needed = room.votes_to_skip
+
+        # Check if this user has already voted to skip this song
+        if Vote.objects.filter(
+            user=self.request.session.session_key, room=room, song_id=room.current_song
+        ).exists():
+            return Response(
+                {"Message": "This user has already voted to skip this song"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         # Vaidate the current user is the host or with this additional vote do we have enough
         # votes to skip the song and if so skip the song
