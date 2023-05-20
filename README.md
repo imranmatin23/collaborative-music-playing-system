@@ -77,6 +77,11 @@ TODO
 4. Testing
 5. Continuous: Update (fullstack-web-app-template)[https://github.com/imranmatin23/fullstack-web-app-template.git] with templates for all the above items
 
+# Bug Fixes
+
+1. `backend/spotify/views.py::spotify_callback()` does not return the user back to the Room they were in after authorizing with Spotify.
+2. `frontend/src/components/MusicPlayer.js` is not rendering the Mui Icons (Pause/Play/Skip).
+
 # References
 
 [1] [Django & React - Full Stack Web App Tutorial](https://youtube.com/playlist?list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j) by Tech With Tim
