@@ -55,18 +55,17 @@ module "amplify_app" {
     }
   }
 
-  # TODO: Use custom subdomain
-  # domain_config = {
-  #   domain_name            = var.domain_name
-  #   enable_auto_sub_domain = true
-  #   wait_for_verification  = true
-  #   sub_domain = [
-  #     {
-  #       branch_name = "main"
-  #       prefix      = var.sub_domain_prefix
-  #     },
-  #   ]
-  # }
+  domain_config = {
+    domain_name            = var.domain_name
+    enable_auto_sub_domain = true
+    wait_for_verification  = true
+    sub_domain = [
+      {
+        branch_name = "main"
+        prefix      = var.sub_domain_prefix
+      },
+    ]
+  }
 
   custom_rules = [
     {
