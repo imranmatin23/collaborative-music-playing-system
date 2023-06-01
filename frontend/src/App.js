@@ -7,6 +7,7 @@ import CreateRoomPage from "./pages/CreateRoomPage";
 import RoomJoinPage from "./pages/RoomJoinPage";
 import Room from "./pages/Room";
 import Info from "./pages/Info";
+import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import "./App.css";
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/info" element={<Info />} />
             <Route path="/create" element={<CreateRoomPage />} />
             <Route path="/room/:roomCode" element={<Room />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </div>
