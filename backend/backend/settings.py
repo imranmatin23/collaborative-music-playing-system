@@ -11,26 +11,44 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load the environment variables
+env = environ.Env(
+    SECRET_KEY=(str),
+    DEBUG=(bool),
+    CORS_ORIGIN_ALLOW_ALL=(bool),
+    ALLOWED_HOSTS=(str),
+    DATABASE_TYPE=(str, "sqlite3"),
+    SQL_ENGINE=(str, "django.db.backends.sqlite3"),
+    SQL_DATABASE=(str, BASE_DIR / "db.sqlite3"),
+    SQL_USER=(str, "user"),
+    SQL_PASSWORD=(str, "password"),
+    SQL_HOST=(str, "localhost"),
+    SQL_PORT=(str, "5432"),
+)
+
+env_path = BASE_DIR / ".env"
+if env_path.is_file():
+    environ.Env.read_env(env_file=str(env_path))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure--z1y54opu^ld^$5i&9j+z=$@39&sdh*oqve=2d8!x_ge%5b86j"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-# TODO: for all domains - only for development
-ALLOWED_HOSTS = ["*"]
+# Define Allowed Hosts
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
 # Enable/Disable CORS
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = env("CORS_ORIGIN_ALLOW_ALL")
 
 # Application definition
 
@@ -60,8 +78,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # CORS Middleware
     "corsheaders.middleware.CorsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -69,8 +87,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        # Tell Django where to find Reacts index.html file in static build
-        "DIRS": [os.path.join(BASE_DIR, "build")],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -89,12 +106,25 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+database_type = env("DATABASE_TYPE")
+if database_type == "postgres":
+    DATABASES = {
+        "default": {
+            "ENGINE": env("SQL_ENGINE"),
+            "NAME": env("SQL_DATABASE"),
+            "USER": env("SQL_USER"),
+            "PASSWORD": env("SQL_PASSWORD"),
+            "HOST": env("SQL_HOST"),
+            "PORT": env("SQL_PORT"),
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
@@ -132,11 +162,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-
-# Tell Django where to look for React's static files (css, js) in static build
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "build/static"),
-]
+STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
