@@ -1,15 +1,13 @@
-# Houseparty Infrastructure
+# Infrastructure
 
 The infrastructure was created using `docker`, `terraform` and `AWS`.
 
-## Infrastructure Diagram
-
-I have deployed the ECS/Fargate service in the public subnet and commented out the NAT Gateway and RDS resources to save on AWS costs as they are not required to be deployed for this template to function correctly.
+## Infrastructure Diagram (TODO)
 
 ![Infrastructure Diagram](../images/infrastructure-diagram.png)
 
 <div style="text-align:center">
-  <a href="https://lucid.app/lucidchart/35adafd2-37bd-4477-bb42-253264c65b92/edit?invitationId=inv_c0ca998c-fc75-436f-9ef0-fed2b64c29bb">Infrastructure Diagram</a>
+  <a href="TODO">Infrastructure Diagram</a>
 </div>
 
 ## Frontend

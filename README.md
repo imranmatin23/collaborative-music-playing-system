@@ -2,7 +2,7 @@
 
 [![Deploy Backend Infrastructure](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend_infra.yml/badge.svg?branch=main)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend_infra.yml) [![Deploy Backend](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend.yml/badge.svg)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend.yml) [![Deploy Frontend Infrastructure](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend_infra.yml/badge.svg)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend_infra.yml) [![Deploy Frontend](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend.yml/badge.svg)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend.yml)
 
-This repository creates a full stack web app with React (Frontend), Django (Backend), PostgreSQL (Database), Docker (Containers), Terraform (IaaC), AWS (3PC), and Github Actions (CI/CD).
+This repository creates the `Houseparty` full stack web app with React (Frontend), Django (Backend), PostgreSQL (Database), Docker (Containers), Terraform (IaaC), AWS (3PC), and Github Actions (CI/CD).
 
 You can access the frontend at https://houseparty.imranmatin.com and the backend at https://api.houseparty.imranmatin.com.
 
