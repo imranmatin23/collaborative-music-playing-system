@@ -24,9 +24,3 @@ JOB_ID=$(aws amplify start-job \
 	--region $REGION  | jq -r '.jobSummary.jobId')
 
 echo "Started Amplify Job $JOB_ID with Commit ID = $LAST_COMMIT_ID..."
-
-aws amplify start-job \
-	--app-id $AMPLIFY_APP_ID \
-	--branch-name $BRANCH_NAME \
-	--job-type RELEASE \
-	--region $REGION  | jq -r '.jobSummary.jobId'
