@@ -1,0 +1,50 @@
+name: Deploy Frontend
+run-name: ${{ github.sha }}
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - frontend/**
+
+env:
+  AWS_REGION: us-west-2
+  AMPLIFY_APP_ID: d16drdzbpobvwc
+  BRANCH_NAME: main
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # Clone the Repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Generate temporary AWS credentials by assuming a role (https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/)
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::775627766428:role/ecr-image-push-role
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Deploy to Amplify
+      - name: Deploy to Amplify
+        run: |
+          LAST_COMMIT_TIME=$(git show -s --format=%cI ${{ github.sha }})
+          JOB_ID=$(aws amplify start-job --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ env.BRANCH_NAME }} --job-type RELEASE --commit-id ${{ github.sha }} --commit-message "${{ github.event.head_commit.message }}" --commit-time "$LAST_COMMIT_TIME" | jq -r '.jobSummary.jobId')
+          echo "Release started"
+          echo "Job ID is $JOB_ID"
+
+          while [[ "$(aws amplify get-job --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ env.BRANCH_NAME }} --job-id $JOB_ID | jq -r '.job.summary.status')" =~ ^(PENDING|RUNNING)$ ]]; do sleep 1; done
+          JOB_STATUS="$(aws amplify get-job --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ env.BRANCH_NAME }} --job-id $JOB_ID | jq -r '.job.summary.status')"
+          echo "Job finished"
+          echo "Job status is $JOB_STATUS"

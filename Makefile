@@ -3,10 +3,44 @@ PY = python3
 VENV = .venv
 BIN=$(VENV)/bin
 
+# General AWS Variables
+REGION=us-west-2
+
+# Amplify Variables
+AMPLIFY_APP_ID=d16drdzbpobvwc
+BRANCH_NAME=main
+
+# ECR Variables
+ECR_REGISTRY=775627766428.dkr.ecr.us-west-2.amazonaws.com
+ECR_REPOSITORY=fullstack-web-app-template-backend
+
+# ECS Variables
+TASK_DEFINITION_NAME=backend-web
+CLUSTER_NAME=prod
+SERVICE_NAME=prod-backend-web
+
 .PHONY: help
 
 help: ## Describes each Makefile target
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+### Frontend
+
+run-frontend: ## Run frontend web server in developement mode
+	cd frontend; \
+	npm run start; \
+	cd ../
+
+deploy-frontend: ## [Requires latest changes to be committed to REMOTE] Manually kick off Amplify Job to build, test, and deploy frontend
+	./scripts/deploy_frontend.sh "$(REGION)" "$(AMPLIFY_APP_ID)" "$(BRANCH_NAME)"
+
+deploy-infra-frontend: ## Deploy backend infrastructure
+	cd infra/frontend; \
+	terraform plan -var-file prod.tfvars; \
+	terraform apply -auto-approve -input=false -var-file prod.tfvars; \
+	cd ../..
+
+### Backend
 
 $(VENV): backend/requirements.txt ## Create .venv Python3 virtual environment
 	$(PY) -m venv $(VENV)
@@ -14,38 +48,31 @@ $(VENV): backend/requirements.txt ## Create .venv Python3 virtual environment
 	$(BIN)/pip install --upgrade pip
 	touch $(VENV)
 
-run-frontend-dev: ## Run frontend web server in developement mode
-	cd frontend; \
-	npm start; \
-	cd ../
-
-run-backend-dev: $(VENV) ## Run backend web server in developement mode
+run-backend: ## Runs the backend web server and postgres database with Docker Compose
 	cd backend; \
-	../$(BIN)/python manage.py makemigrations; \
-	../$(BIN)/python manage.py migrate; \
-	../$(BIN)/python manage.py runserver; \
+	docker-compose up -d --build; \
 	cd ../
 
-build-frontend: ## Builds the frontend and moves output to the backend folder
-	cd frontend; \
-	npm run relocate; \
-	cd ../
-
-run-monolith-dev: build-frontend run-backend-dev ## Runs the backend webserver with built frontend code colocated
-
-build-backend-docker: build-frontend ## Builds a Docker image of backend webserver with built frontend code colocated
+stop-backend: ## Stops the backend web server and postgres database with Docker Compose (NOTE: Adding -v will delete the database)
 	cd backend; \
-	docker build -t collaborative-music-playing-system .; \
+	docker-compose down; \
 	cd ../
 
-run-backend-docker: build-backend-docker ## Runs a Docker image of backend webserver with built frontend code colocated
+logs-backend: ## Prints the last 100 lines of the running Docker container
 	cd backend; \
-	docker run -d --name collaborative-music-playing-system -p 8000:8000 collaborative-music-playing-system; \
+	docker-compose logs web --tail 100;\
 	cd ../
 
-stop-backend-docker: ## Stops a Docker image of backend webserver with built frontend code colocated
-	docker stop collaborative-music-playing-system
-	docker rm collaborative-music-playing-system
+build-backend: ## Builds a Docker image of backend webserver
+	cd backend; \
+	docker build -t $(ECR_REPOSITORY) .; \
+	cd ../
 
-logs-backend-docker: ## Prints the last 100 lines of the running Docker container
-	docker logs collaborative-music-playing-system -n 100
+deploy-backend: build-backend ## Manually push LOCALLY built docker image to ECR, update task definition and deploy backend webserver to ECS
+	./scripts/deploy_backend.sh "$(REGION)" "$(ECR_REGISTRY)" "$(ECR_REPOSITORY)" "$(TASK_DEFINITION_NAME)" "$(CLUSTER_NAME)" "$(SERVICE_NAME)"
+
+deploy-infra-backend: ## Deploy backend infrastructure
+	cd infra/backend; \
+	terraform plan -var-file prod.tfvars; \
+	terraform apply -auto-approve -input=false -var-file prod.tfvars; \
+	cd ../..

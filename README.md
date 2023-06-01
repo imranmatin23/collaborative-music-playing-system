@@ -1,87 +1,50 @@
-# Collaborative Music Playing System
+# Houseparty
 
-The Collaborative Music Playing System is a way for you and your friends to listen to music on Spotify together! The system is built with React and Django.
+[![Deploy Backend Infrastructure](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend_infra.yml/badge.svg?branch=main)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend_infra.yml) [![Deploy Backend](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend.yml/badge.svg)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_backend.yml) [![Deploy Frontend Infrastructure](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend_infra.yml/badge.svg)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend_infra.yml) [![Deploy Frontend](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend.yml/badge.svg)](https://github.com/imranmatin23/collaborative-music-playing-system/actions/workflows/deploy_frontend.yml)
 
-# Setup
+This repository creates a full stack web app with React (Frontend), Django (Backend), PostgreSQL (Database), Docker (Containers), Terraform (IaaC), AWS (3PC), and Github Actions (CI/CD).
 
-## Step 0: Set up a Spotify App
+You can access the frontend at https://houseparty.imranmatin.com and the backend at https://api.houseparty.imranmatin.com.
 
-Follow the [Spotify Web API documentation](https://developer.spotify.com/documentation/web-api) to create an App.
+![High Level Architecture](images/high-level-architecture.png)
 
-```bash
-{
-    "App name": "Collaborative Music Playing System",
-    "App description": "The Collaborative Music Playing System is a way for you and your friends to listen to music on Spotify together!",
-    "Redirect URIs": "http://127.0.0.1:8000/spotify/redirect"
-}
-```
+<div style="text-align:center">
+  <a href="https://lucid.app/lucidchart/61862a22-6730-4e64-aada-cd3617d847a3/edit?viewport_loc=-613%2C-1072%2C3552%2C1902%2C0_0&invitationId=inv_61387a4a-f09a-4db2-b2ba-9c67d432c55f">High Level Architecture Diagram</a>
+</div>
 
-## Step 1: Clone the project
+## Environments
 
-```bash
-git clone https://github.com/imranmatin23/collaborative-music-playing-system.git
-cd collaborative-music-playing-system
-```
+The following environments are available for this app.
 
-## Step 2: Create virtual environment
+- `local`
+- ~~`dev`~~
+- ~~`alpha`~~
+- ~~`beta`~~
+- `prod`
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r backend/requirements.txt
-```
+## Frontend
 
-## Step 3: Run the backend
+The frontend was created using the `create-react-app` CLI. See [frontend/README.md](frontend/README.md) for further details about the fronted.
 
-Update the Spotify credentials in `credentials.py`. Run the backend webserver at http://127.0.0.1:8000.
+## Backend
 
-```bash
-cd backend
-python manage.py migrate
-python manage.py makemigrations
-python manage.py runserver
-```
+The backend was created using the `django-admin` CLI and the database was created using `PostgreSQL`. See [backend/README.md](backend/README.md) for further details about the backend.
 
-## Step 4: Run the frontend
+## Infrastructure
 
-Run the frontend webserver at http://127.0.0.1:3000.
+The infrastructure was created using `docker`, `terraform` and `AWS`. See [infra/README.md](infra/README.md) for further details about the infrastructure.
 
-```bash
-cd frontend
-npm install
-npm start
-```
+## CI (Build/Test) / CD (Deploy) Pipeline
 
-## Step 5: Build the App
+The CI/CD pipeline was created using `GitHub Actions`. See [.github/workflows/README.md](.github/workflows/README.md) for further details about the CI/CD pipeline.
 
-Builds the frontend and moves the build to the backend. To test the build simply run the backend webserver only.
+## Enhancements
 
-```bash
-cd frontend
-npm run relocate
-```
-
-## Step 5: Deploy the App
-
-TODO
-
-```bash
-TODO
-```
-
-# TODO
-
-1. IaaC/Deployment (monolith)
-2. Testing
-3. CI/CD
-4. Continuous: Update (fullstack-web-app-template)[https://github.com/imranmatin23/fullstack-web-app-template.git] with templates for all the above items
-
-# Bug Fixes
-
-1. `backend/spotify/views.py::spotify_callback()` does not return the user back to the Room they were in after authorizing with Spotify.
-
-# References
-
-[1] [Django & React - Full Stack Web App Tutorial](https://youtube.com/playlist?list=PLzMcBGfZo4-kCLWnGmK0jUBmGLaJxvi4j) by Tech With Tim
-[2] [Writing Makefiles for Python Projects](https://venthur.de/2021-03-31-python-makefiles.html) by Bastian Venthur
-[3] [Dockerizing Django App](https://blog.logrocket.com/dockerizing-django-app/) by LogRocket
+- Add test scaffolding (unit, integration, canary, etc.) for frontend/backend.
+- Read backend secrets from AWS Secrets Manager rather than from environment variables.
+- Convert frontend CI/CD to use Github Actions for build, test, deploy and convert frontend Amplify to manual hosting (i.e. no Git provider connecting and no build, test, deploy in Amplify)
+- Add dev/alpha/beta stages
+  - Secure dev/alpha/beta/prod stages
+  - Create infrastructure
+  - Add CI/CD stages using only Github Actions (NOTE: GitHub Actions has a Workflow Visualizer that is the equivalent of a Pipeline Visualizer).
+  - Update frontend/backend app code
