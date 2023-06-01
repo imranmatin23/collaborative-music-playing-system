@@ -7,7 +7,7 @@ BIN=$(VENV)/bin
 REGION=us-west-2
 
 # Amplify Variables
-AMPLIFY_APP_ID=d16drdzbpobvwc
+AMPLIFY_APP_ID=d1dr5v5g7cfiko
 BRANCH_NAME=main
 
 # ECR Variables
