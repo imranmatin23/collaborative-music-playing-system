@@ -11,7 +11,7 @@ on:
 
 env:
   AWS_REGION: us-west-2
-  AMPLIFY_APP_ID: d122ihsxyi4grc
+  AMPLIFY_APP_ID: d16drdzbpobvwc
   BRANCH_NAME: main
 
 permissions:
