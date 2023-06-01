@@ -1,6 +1,6 @@
 region = "us-west-2"
 project_name = "houseparty"
-gh_repository = "https://github.com/imranmatin23/collaborative-music-playing-system"
+gh_repository = "https://github.com/imranmatin23/houseparty"
 domain_name = "imranmatin.com"
 sub_domain_prefix = "houseparty"
 backend_url = "https://api.houseparty.imranmatin.com"
