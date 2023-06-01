@@ -39,8 +39,11 @@ jobs:
       # Deploy to Amplify
       - name: Deploy to Amplify
         run: |
+          LAST_COMMIT_ID=$(git show -s --format=%H ${{ github.sha }})
+          LAST_COMMIT_MESSAGE=$(git show -s --format=%s ${{ github.sha }})
           LAST_COMMIT_TIME=$(git show -s --format=%cI ${{ github.sha }})
-          JOB_ID=$(aws amplify start-job --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ env.BRANCH_NAME }} --job-type RELEASE --commit-id ${{ github.sha }} --commit-message "${{ github.event.head_commit.message }}" --commit-time "$LAST_COMMIT_TIME" | jq -r '.jobSummary.jobId')
+
+          JOB_ID=$(aws amplify start-job --app-id ${{ env.AMPLIFY_APP_ID }} --branch-name ${{ env.BRANCH_NAME }} --job-type RELEASE --commit-id "$LAST_COMMIT_ID" --commit-message "$LAST_COMMIT_MESSAGE" --commit-time "$LAST_COMMIT_TIME" | jq -r '.jobSummary.jobId')
           echo "Release started"
           echo "Job ID is $JOB_ID"
 
