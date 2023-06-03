@@ -4,8 +4,7 @@ Define the Views for the Spotfiy App. These contain the backend logic for each A
 NOTE: A user is identified by their Session Key.
 """
 
-from django.shortcuts import render, redirect
-from .credentials import REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, DNS_NAME
+from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -14,6 +13,23 @@ from .util import *
 import base64
 from api.models import Room
 from .models import Vote
+from pathlib import Path
+import environ
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load the environment variables
+env = environ.Env(
+    SPOTIFY_CLIENT_ID=(str),
+    SPOTIFY_CLIENT_SECRET=(str),
+    SPOTIFY_REDIRECT_URI=(str),
+    FRONTEND_ENDPOINT=(str),
+)
+
+env_path = BASE_DIR / ".env"
+if env_path.is_file():
+    environ.Env.read_env(env_file=str(env_path))
 
 
 class AuthURL(APIView):
@@ -43,8 +59,8 @@ class AuthURL(APIView):
         params = {
             "scope": scopes,
             "response_type": "code",
-            "redirect_uri": REDIRECT_URI,
-            "client_id": CLIENT_ID,
+            "redirect_uri": env("SPOTIFY_REDIRECT_URI"),
+            "client_id": env("SPOTIFY_CLIENT_ID"),
         }
 
         # Create Authorization URL
@@ -75,7 +91,9 @@ def spotify_callback(request, format=None):
     error = request.GET.get("error")
 
     # Define the Access Token request headers
-    auth_header_string_bytes = (CLIENT_ID + ":" + CLIENT_SECRET).encode("ascii")
+    auth_header_string_bytes = (
+        env("SPOTIFY_CLIENT_ID") + ":" + env("SPOTIFY_CLIENT_SECRET")
+    ).encode("ascii")
     base64_bytes = base64.b64encode(auth_header_string_bytes)
     base64_string = base64_bytes.decode("ascii")
     headers = {"Authorization": f"Basic {base64_string}"}
@@ -84,7 +102,7 @@ def spotify_callback(request, format=None):
     data = {
         "grant_type": "authorization_code",
         "code": code,
-        "redirect_uri": REDIRECT_URI,
+        "redirect_uri": env("SPOTIFY_REDIRECT_URI"),
     }
 
     # Request an Access Token
@@ -113,7 +131,7 @@ def spotify_callback(request, format=None):
     # Since we don't have the Room Code we can't go to that page. Technically
     # we could invoke the /api/user-in-room endpoint to get the room to redirect to
     # This endpoint needs to be updated based on where/how this is being hosted.
-    return redirect(DNS_NAME)
+    return redirect(env("FRONTEND_ENDPOINT"))
 
 
 class IsAuthenticated(APIView):

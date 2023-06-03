@@ -1,28 +1,22 @@
-FROM python:3.9
-
-# Setup environment variable for root directory 
-# (docker home directory) of Django App
-ENV DockerHOME=/home/app/webapp
-# Create directory in image for docker home directory
-RUN mkdir -p $DockerHOME
-# Set working directory to docker home directory
-WORKDIR $DockerHOME
+FROM python:3.10
 
 # Set Python environment variables  
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Upgrade pip  
-RUN pip install --upgrade pip
+# set a directory for the app
+WORKDIR /usr/src/app
 
 # Copy the whole project to the docker home directory
-COPY . $DockerHOME
+COPY . .
 
 # Install dependencies
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN apt-get update && apt-get install netcat -y
 
 # Expose the port on the container for Django App
-EXPOSE 8000
+EXPOSE 80
 
-# Run the server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run the entrypoint script
+ENTRYPOINT ["./entrypoint.sh"]

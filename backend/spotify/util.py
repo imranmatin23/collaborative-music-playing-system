@@ -6,7 +6,22 @@ from .models import SpotifyToken
 from django.utils import timezone
 from datetime import timedelta
 import requests
-from .credentials import CLIENT_ID, CLIENT_SECRET
+from pathlib import Path
+import environ
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load the environment variables
+env = environ.Env(
+    SPOTIFY_CLIENT_ID=(str),
+    SPOTIFY_CLIENT_SECRET=(str),
+)
+
+env_path = BASE_DIR / ".env"
+if env_path.is_file():
+    environ.Env.read_env(env_file=str(env_path))
+
 
 # Base Spotify URL
 BASE_URL = "https://api.spotify.com/v1/me/"
@@ -92,8 +107,8 @@ def refresh_spotify_token(session_id):
     data = {
         "grant_type": "refresh_token",
         "refresh_token": refresh_token,
-        "client_id": CLIENT_ID,
-        "client_secret": CLIENT_SECRET,
+        "client_id": env("SPOTIFY_CLIENT_ID"),
+        "client_secret": env("SPOTIFY_CLIENT_SECRET"),
     }
 
     # Request a Refresh Token

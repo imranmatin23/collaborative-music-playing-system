@@ -16,13 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from api.views import index
 
 urlpatterns = [
+    # Add the Root App's URLs
+    path("", include("root.urls")),
     # Admin API routes
     path("admin/", admin.site.urls),
-    # Index Route for static build
-    path("", index, name="index"),
     # Add the API App's URLs
     path("api/", include("api.urls")),
     # Add the Spotify App's URLs
