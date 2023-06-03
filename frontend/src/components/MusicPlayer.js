@@ -12,7 +12,7 @@ import {
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import PauseIcon from "@mui/icons-material/Pause";
-import API from "../Api";
+import axios from "axios";
 
 /*
  * Render the MusicPlayer component.
@@ -23,7 +23,8 @@ function MusicPlayer(props) {
 
   // Execute API request to backend to play a Song for a Room
   function playSong() {
-    API.put("/spotify/play")
+    axios
+      .put("/spotify/play")
       .then((response) => response.data)
       .then((data) => {
         console.log(data);
@@ -35,7 +36,8 @@ function MusicPlayer(props) {
 
   // Execute API request to backend to pause a Song for a Room
   function pauseSong() {
-    API.put("/spotify/pause")
+    axios
+      .put("/spotify/pause")
       .then((response) => response.data)
       .then((data) => {
         console.log(data);
@@ -47,7 +49,8 @@ function MusicPlayer(props) {
 
   // Execute API request to backend to skip a Song for a Room
   function skipSong() {
-    API.put("/spotify/skip")
+    axios
+      .put("/spotify/skip")
       .then((response) => response.data)
       .then((data) => {
         console.log(data);

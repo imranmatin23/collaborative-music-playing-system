@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Grid, Button, Typography } from "@mui/material";
-import API from "../Api";
+import axios from "axios";
 import CreateRoomPage from "./CreateRoomPage";
 import MusicPlayer from "../components/MusicPlayer";
 
@@ -28,7 +28,8 @@ function Room() {
 
   // Define the function to get the details about a Room from the backend
   function getRoomDetails() {
-    API.get("/api/get-room?code=" + roomCode)
+    axios
+      .get("/api/get-room?code=" + roomCode)
       .then((response) => response.data)
       // Update the state with the Room's details
       .then((data) => {
@@ -51,14 +52,16 @@ function Room() {
 
   // Authenticates a user with Spotify if not already authenticated
   function authenticateSpotify() {
-    API.get("/spotify/is-authenticated")
+    axios
+      .get("/spotify/is-authenticated")
       .then((response) => response.data)
       .then((data) => {
         console.log(data);
 
         // Authenticate the user with Spotify if they are not authenticated yet
         if (!data.status) {
-          API.get("/spotify/get-auth-url")
+          axios
+            .get("/spotify/get-auth-url")
             .then((response) => response.data)
             .then((data) => {
               console.log(data);
@@ -77,7 +80,8 @@ function Room() {
 
   // Get the current song playing for the Room and update the state of Song
   function getCurrentSong() {
-    API.get("/spotify/current-song")
+    axios
+      .get("/spotify/current-song")
       .then((response) => {
         if (response.status === 204) {
           console.log("No song currently playing");
@@ -98,7 +102,8 @@ function Room() {
   // Define the handler for when the Leave Button is pressed
   function leaveButtonPressed() {
     // Invoke the LeaveRoom API to remove the user from the Room in the backend
-    API.post("/api/leave-room")
+    axios
+      .post("/api/leave-room")
       .then((response) => response.data)
       // Navigate to the Home Page after the backend API call completes
       .then((data) => {

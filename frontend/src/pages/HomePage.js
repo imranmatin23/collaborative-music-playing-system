@@ -4,7 +4,7 @@
 import React, { useEffect } from "react";
 import { Grid, Button, ButtonGroup, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import API from "../Api";
+import axios from "axios";
 
 /*
  * Render the HomePage component.
@@ -19,7 +19,8 @@ function HomePage() {
   useEffect(() => {
     // Invoke the backend API to check if a user is already in a Room
     async function getUserInRoom() {
-      API.get("/api/user-in-room")
+      axios
+        .get("/api/user-in-room")
         .then((response) => {
           console.log(response);
           // If the user is in a room, redirect them to that Room's page

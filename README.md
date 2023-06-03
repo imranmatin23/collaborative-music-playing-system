@@ -38,6 +38,10 @@ The infrastructure was created using `docker`, `terraform` and `AWS`. See [infra
 
 The CI/CD pipeline was created using `GitHub Actions`. See [.github/workflows/README.md](.github/workflows/README.md) for further details about the CI/CD pipeline.
 
+## Bugs
+
+1. Convert `frontend` to use `.env` for `BACKEND_URL` and not `package.json`.
+
 ## Enhancements
 
 - Add test scaffolding (unit, integration, canary, etc.) for frontend/backend.

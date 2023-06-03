@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Grid, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import API from "../Api";
+import axios from "axios";
 
 /*
  * Render the RoomJoinPage component.
@@ -32,7 +32,8 @@ function RoomJoinPage() {
     };
 
     // Navigate the user to the page for the Room they joined if successful
-    API.post("/api/join-room", body)
+    axios
+      .post("/api/join-room", body)
       .then((response) => {
         console.log(response);
         navigate(`/room/${roomCode}`);
