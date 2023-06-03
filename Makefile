@@ -26,9 +26,19 @@ help: ## Describes each Makefile target
 
 ### Frontend
 
-run-frontend: ## Run frontend web server in developement mode
+run-frontend: ## Run frontend web server in developement mode with Docker Compose
 	cd frontend; \
-	npm run start; \
+	docker-compose up -d --build; \
+	cd ../
+
+stop-frontend: ## Stops the frontend web server with Docker Compose
+	cd frontend; \
+	docker-compose down; \
+	cd ../
+
+logs-frontend: ## Prints the last 100 lines of the running Docker container
+	cd frontend; \
+	docker-compose logs frontend --tail 100;\
 	cd ../
 
 deploy-frontend: ## [Requires latest changes to be committed to REMOTE] Manually kick off Amplify Job to build, test, and deploy frontend
