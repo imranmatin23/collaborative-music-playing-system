@@ -52,6 +52,7 @@ resource "aws_ecs_service" "ecs_service" {
   deployment_maximum_percent         = 200
   launch_type                        = "FARGATE"
   scheduling_strategy                = "REPLICA"
+  enable_execute_command             = true
 
   load_balancer {
     target_group_arn = aws_lb_target_group.backend_target_group.arn
@@ -103,6 +104,25 @@ resource "aws_iam_role" "ecs_task_task_iam_role" {
       }
     ]
   })
+
+  inline_policy {
+    name = "prod-backend-task-ssmmessages"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action   = [
+            "ssmmessages:CreateControlChannel",
+            "ssmmessages:CreateDataChannel",
+            "ssmmessages:OpenControlChannel",
+            "ssmmessages:OpenDataChannel",
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+      ]
+    })
+  }
 }
 
 resource "aws_iam_role" "ecs_task_execution_iam_role" {

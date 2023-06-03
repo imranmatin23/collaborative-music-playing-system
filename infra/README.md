@@ -30,7 +30,13 @@ export TF_VAR_secret_key="TODO"
 export TF_VAR_sql_password="TODO"
 ```
 
+### Database
+
 To use an external `PostgreSQL` RDS database as the database instead of a `SQLite3` file-based database on the ECS Fargate Tasks, uncomment the RDS code in `rds.tf`, `ecs.tf`, and `outputs.tf` and change the `database_type` to `postgres` in `prod.tfvars`. NOTE: A NAT Gateway is required for ECS/Fargate to work if it is not deployed in a public subnet with a public IP since it must pull the ECR image for the container.
+
+### Opening a Shell on an ECS Task
+
+You can open a shell on an ECS Task using `make open-backend-web-shell`. Note, you must install the Session Manager plugin. For macOS, you can use `brew install session-manager-plugin`. For other platforms, check this [link](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html).
 
 ## References
 
