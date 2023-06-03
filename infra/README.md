@@ -2,14 +2,6 @@
 
 The infrastructure was created using `docker`, `terraform` and `AWS`.
 
-## Infrastructure Diagram (TODO)
-
-![Infrastructure Diagram](../images/infrastructure-diagram.png)
-
-<div style="text-align:center">
-  <a href="TODO">Infrastructure Diagram</a>
-</div>
-
 ## Frontend
 
 To deploy the infrastructure remotely you can rely on `.github/workflows/deploy_frontend_infra.yml` (CI/CD with GitHub Actions). All secrets that are required during deployment are defined as GitHub Repository Secrets, therefore add the following GitHub Secret to the repository.
