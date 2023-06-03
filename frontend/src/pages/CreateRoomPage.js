@@ -3,7 +3,7 @@
  */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import API from "../Api";
 import {
   Grid,
   FormControl,
@@ -60,8 +60,7 @@ function CreateRoomPage({
     };
 
     // Navigate the user to the page for the Room they joined if successful
-    axios
-      .post("/api/create-room", body)
+    API.post("/api/create-room", body)
       .then((response) => response.data)
       .then((data) => {
         console.log(data);
@@ -82,8 +81,7 @@ function CreateRoomPage({
 
     // After the API invocation, either update the success or error message
     // and invoke the callback function required after Room Updates
-    axios
-      .patch("/api/update-room", body)
+    API.patch("/api/update-room", body)
       .then((response) => response.data)
       .then((data) => {
         console.log(data);

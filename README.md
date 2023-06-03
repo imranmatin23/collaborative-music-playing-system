@@ -40,7 +40,7 @@ The CI/CD pipeline was created using `GitHub Actions`. See [.github/workflows/RE
 
 ## Bugs
 
-1. Convert `frontend` to use `.env` for `BACKEND_URL` and not `package.json`.
+N/A.
 
 ## Enhancements
 

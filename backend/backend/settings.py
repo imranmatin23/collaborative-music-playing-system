@@ -21,6 +21,7 @@ env = environ.Env(
     SECRET_KEY=(str),
     DEBUG=(bool),
     CORS_ORIGIN_ALLOW_ALL=(bool),
+    CORS_ALLOW_CREDENTIALS=(bool),
     ALLOWED_HOSTS=(str),
     DATABASE_TYPE=(str, "sqlite3"),
     SQL_ENGINE=(str, "django.db.backends.sqlite3"),
@@ -49,6 +50,9 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
 
 # Enable/Disable CORS
 CORS_ORIGIN_ALLOW_ALL = env("CORS_ORIGIN_ALLOW_ALL")
+
+# Allow CORS credentials (see https://stackoverflow.com/questions/57305141/react-django-rest-framework-session-is-not-persisting-working)
+CORS_ALLOW_CREDENTIALS = env("CORS_ALLOW_CREDENTIALS")
 
 # Application definition
 
