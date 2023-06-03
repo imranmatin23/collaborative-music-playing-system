@@ -12,12 +12,12 @@ BRANCH_NAME=main
 
 # ECR Variables
 ECR_REGISTRY=775627766428.dkr.ecr.us-west-2.amazonaws.com
-ECR_REPOSITORY=houseparty
+ECR_REPOSITORY=houseparty-prod-backend
 
 # ECS Variables
-TASK_DEFINITION_NAME=backend-web
-CLUSTER_NAME=prod
-SERVICE_NAME=prod-backend-web
+TASK_DEFINITION_NAME=houseparty-prod-task-definition
+CLUSTER_NAME=houseparty-prod-ecs-cluster
+SERVICE_NAME=houseparty-prod-ecs-service
 
 .PHONY: help
 
