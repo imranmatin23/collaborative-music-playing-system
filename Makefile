@@ -12,7 +12,7 @@ BRANCH_NAME=main
 
 # ECR Variables
 ECR_REGISTRY=775627766428.dkr.ecr.us-west-2.amazonaws.com
-ECR_REPOSITORY=fullstack-web-app-template-backend
+ECR_REPOSITORY=houseparty
 
 # ECS Variables
 TASK_DEFINITION_NAME=backend-web
