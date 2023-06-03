@@ -26,11 +26,14 @@ export TF_VAR_gh_personal_access_token="TODO"
 
 ## Backend
 
+NOTE: Currently the `S3` backend that is configured in `infra/backend/terraform_backend.tf` is set up for `prod`. To use a different backend you must manually update the `key` field in the backend (which will ensure you do not change the infrastructure of the production environment accidentally).
+
 To deploy the infrastructure remotely you can rely on `.github/workflows/deploy_backend_infra.yml` (CI/CD with GitHub Actions). All secrets that are required during deployment are defined as GitHub Repository Secrets.
 
 To deploy the infrastructure from your local machine, execute `make deploy-infra-backend` (NOTE: Terraform variable inputs are defined in `infra/backend/prod.tfvars`). You must set the following environment variables locally before deploying:
 
 ```bash
+export TF_VAR_spotify_client_secret="TODO"
 export TF_VAR_secret_key="TODO"
 export TF_VAR_sql_password="TODO"
 ```
