@@ -1,6 +1,6 @@
 # Product Demo
 
-This guide will describe how to use `House Party`!
+House Party is a Collaborative Music Playing System and is a way for you and your friends to listen to music on Spotify together! This guide will describe how to use `House Party`!
 
 ## Demo Video
 
