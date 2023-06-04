@@ -2,9 +2,11 @@
 
 [![Deploy Backend Infrastructure](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_backend_infra.yml/badge.svg?branch=main)](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_backend_infra.yml) [![Deploy Backend](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_backend.yml/badge.svg)](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_backend.yml) [![Deploy Frontend Infrastructure](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_frontend_infra.yml/badge.svg)](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_frontend_infra.yml) [![Deploy Frontend](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_frontend.yml/badge.svg)](https://github.com/imranmatin23/houseparty/actions/workflows/deploy_frontend.yml)
 
-House Party is a Collaborative Music Playing System and is a way for you and your friends to listen to music on Spotify together! This repository creates the `House Party` full stack web app with React (Frontend), Django (Backend), PostgreSQL (Database), Docker (Containers), Terraform (IaC), AWS (3PC), and Github Actions (CI/CD).
+House Party is a Collaborative Music Playing System and is a way for you and your friends to listen to music on Spotify together! You can access the frontend at https://houseparty.imranmatin.com and the backend at https://api.houseparty.imranmatin.com. For a demo of `House Party` and a guide for how to use it, please see [PRODUCT_DEMO.md](PRODUCT_DEMO.md).
 
-You can access the frontend at https://houseparty.imranmatin.com and the backend at https://api.houseparty.imranmatin.com.
+## High Level Architecture
+
+`House Party` is full stack web app created with React (Frontend), Django (Backend), PostgreSQL (Database), Docker (Containers), Terraform (IaC), AWS (3PC), and Github Actions (CI/CD).
 
 ![High Level Architecture](images/high-level-architecture.png)
 

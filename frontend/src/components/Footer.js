@@ -15,20 +15,20 @@ import "../styles/Footer.css";
 function Footer() {
   return (
     <div className="footer">
-      {/* <div className="socialMedia">
-        <IconButton href="mailto:imranmatin23@gmail.com">
+      <div className="socialMedia">
+        {/* <IconButton href="mailto:imranmatin23@gmail.com">
           <EmailIcon />
-        </IconButton>
-        <IconButton href="https://www.linkedin.com/in/imranmatin/">
+        </IconButton> */}
+        {/* <IconButton href="https://www.linkedin.com/in/imranmatin/">
           <LinkedInIcon />
-        </IconButton>
-        <IconButton href="https://github.com/imranmatin23">
+        </IconButton> */}
+        <IconButton href="https://github.com/imranmatin23/houseparty">
           <GitHubIcon />
         </IconButton>
-        <IconButton href="https://twitter.com/imranmatin23">
+        {/* <IconButton href="https://twitter.com/imranmatin23">
           <TwitterIcon />
-        </IconButton>
-      </div> */}
+        </IconButton> */}
+      </div>
       <p> &copy; 2023 Imran Matin</p>
     </div>
   );
