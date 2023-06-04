@@ -22,6 +22,12 @@ NOTE: Currently the `S3` backend that is configured in `infra/backend/terraform_
 
 To deploy the infrastructure remotely you can rely on `.github/workflows/deploy_backend_infra.yml` (CI/CD with GitHub Actions). All secrets that are required during deployment are defined as GitHub Repository Secrets.
 
+```bash
+SPOTIFY_CLIENT_SECRET="TODO"
+BACKEND_INFRA_SECRET_KEY="TODO"
+SQL_PASSWORD="TODO"
+```
+
 To deploy the infrastructure from your local machine, execute `make deploy-infra-backend` (NOTE: Terraform variable inputs are defined in `infra/backend/prod.tfvars`). You must set the following environment variables locally before deploying:
 
 ```bash
