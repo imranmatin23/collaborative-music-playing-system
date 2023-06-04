@@ -40,7 +40,10 @@ resource "aws_security_group" "rds_cluster_security_group" {
     protocol        = "tcp"
     from_port       = var.sql_port
     to_port         = var.sql_port
-    security_groups = [aws_security_group.ecs_service_security_group.id, aws_security_group.ec2_security_group.id]
+    security_groups = [
+      aws_security_group.ecs_service_security_group.id, 
+      # aws_security_group.ec2_security_group.id
+      ]
   }
 
   egress {
