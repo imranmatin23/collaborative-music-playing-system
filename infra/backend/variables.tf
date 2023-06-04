@@ -14,6 +14,10 @@ variable "availability_zones" {
   description = "Availability zones"
 }
 
+variable "key_pair_name" {
+  description = "The Key Pair to use with the EC2 Instance"
+}
+
 variable "ecs_backend_retention_days" {
   description = "Retention period for backend logs"
   default     = 30
