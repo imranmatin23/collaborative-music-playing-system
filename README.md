@@ -44,9 +44,6 @@ N/A.
 
 ## Enhancements
 
-- Add ECS Exec for Django ECS Tasks.
-- Add EC2 Bastion Host for RDS.
-
 - Add test scaffolding (unit, integration, canary, etc.) for frontend/backend.
 - Read backend secrets from AWS Secrets Manager rather than from environment variables.
 - Convert frontend CI/CD to use Github Actions for build, test, deploy and convert frontend Amplify to manual hosting (i.e. no Git provider connecting and no build, test, deploy in Amplify)
