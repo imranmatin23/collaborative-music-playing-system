@@ -4,7 +4,7 @@ House Party is a Collaborative Music Playing System and is a way for you and you
 
 ## Demo Video
 
-TODO
+https://github.com/imranmatin23/houseparty/assets/22042385/c8b6201a-0cc5-4a9b-a344-e6d32e612f26
 
 ## Usage
 
