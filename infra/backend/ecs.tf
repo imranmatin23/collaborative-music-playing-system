@@ -29,8 +29,8 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       sql_database = var.sql_database
       sql_user = var.sql_user
       sql_password = var.sql_password
-      sql_host = aws_rds_cluster.rds_cluster.endpoint
-      # sql_host = "N/A"
+      # sql_host = aws_rds_cluster.rds_cluster.endpoint
+      sql_host = "N/A"
       sql_port = var.sql_port
       spotify_client_id = var.spotify_client_id
       spotify_client_secret = var.spotify_client_secret
